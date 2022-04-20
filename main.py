@@ -1,5 +1,6 @@
 import sys
 
+import pandas as pd
 from PyQt6 import QtWidgets
 
 import design
@@ -30,6 +31,8 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
 
     def convert_file(self):
         self.lineEdit.setText("Алесики")
+        read_file = pd.read_csv('csvFile.csv')
+        read_file.to_excel('testExcel.xlsx', index=None, header=True)
         handle = open(self.filename, "r")
         return
 
