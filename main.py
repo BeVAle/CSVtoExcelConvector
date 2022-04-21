@@ -1,7 +1,7 @@
 import os
 import sys
+from datetime import datetime
 
-import now as now
 import pandas as pd
 from PyQt6 import QtWidgets
 
@@ -51,11 +51,8 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.lineEdit.setText("Конвертация")
         read_file = pd.read_csv(self.filename)
 
-        # extension = os.path.splitext(self.filename)
-        # extension[0] = extension[0]+ now.strftime("%d-%m-%Y %H:%M")
-        # extension[1] = self.filename.replace('.csv', '.xlsx')
-
-        self.new_filename = self.filename.replace('.csv', '.xlsx')
+        extension = os.path.splitext(self.filename)
+        self.new_filename = extension[0] + '_' + str(datetime.now().strftime('%d%m%Y%H%M%S')) + '.xlsx'
         read_file.to_excel(self.new_filename, index=None, header=True)
         self.OpenButton.setVisible(True)
         self.lineEdit.setText("Конвертирование успешно")
