@@ -40,6 +40,20 @@ class Ui_MainWindow(object):
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit.setGeometry(QtCore.QRect(260, 90, 300, 20))
         self.lineEdit.setObjectName("lineEdit")
+        self.lineEdit.setReadOnly(True)
+
+        self.labelInformationOnConvertation = QtWidgets.QLabel(self.centralwidget)
+        self.labelInformationOnConvertation.setGeometry(QtCore.QRect(260, 140, 315, 16))
+        self.labelInformationOnConvertation.setScaledContents(False)
+        self.labelInformationOnConvertation.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.labelInformationOnConvertation.setWordWrap(False)
+        self.labelInformationOnConvertation.setObjectName("label")
+        self.labelInformationOnConvertation.setVisible(False)
+
+        self.lineEditInformationOnConvertation = QtWidgets.QLineEdit(self.centralwidget)
+        self.lineEditInformationOnConvertation.setGeometry(QtCore.QRect(260, 160, 300, 20))
+        self.lineEditInformationOnConvertation.setObjectName("lineEdit")
+        self.lineEditInformationOnConvertation.setVisible(False)
 
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -61,6 +75,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "CSV в Excel"))
+        self.labelInformationOnConvertation.setText(_translate("MainWindow", "Укажите ниже столбцы, которые нужно конвертировать"))
         self.SelectFileButton.setText(_translate("MainWindow", "Выбрать файл"))
         self.ConvertorButton.setText(_translate("MainWindow", "Конвертировать"))
         self.OpenButton.setText(_translate("MainWindow", "Открыть в Excel"))

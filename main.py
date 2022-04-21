@@ -46,6 +46,8 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
             self.filename = file[0]
             self.lineEdit.setText(file[0])
             self.OpenButton.setVisible(False)
+            self.labelInformationOnConvertation.setVisible(True)
+            self.lineEditInformationOnConvertation.setVisible(True)
 
     def convert_file(self):
         self.lineEdit.setText("Конвертация")
