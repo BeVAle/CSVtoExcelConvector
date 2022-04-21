@@ -9,7 +9,7 @@ import design
 
 
 class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
-    def __init__(self, filename=None, new_filename=None):
+    def __init__(self, filename=None, new_filename=None, csv_columns=None):
         super().__init__()
         self.setupUi(self)
         self.SelectFileButton.clicked.connect(self.browse_folder)
@@ -17,6 +17,7 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.OpenButton.clicked.connect(self.open_file)
         self.__filename = filename
         self.__new_filename = new_filename
+        self.__csv_columns = csv_columns
 
     @property
     def filename(self):
@@ -34,6 +35,14 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
     def new_filename(self, new):
         self.__new_filename = new
 
+    @property
+    def csv_columns(self):
+        return self.__csv_columns
+
+    @csv_columns.setter
+    def csv_columns(self, new):
+        self.__csv_columns = new
+
     def browse_folder(self):
         file = QtWidgets.QFileDialog.getOpenFileName(self, "Выберите файл")
 
@@ -46,12 +55,26 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
             self.filename = file[0]
             self.lineEdit.setText(file[0])
             self.OpenButton.setVisible(False)
+
+            file = pd.read_csv(self.filename)
+            self.csv_columns = file.columns
+
+            self.lineEditInformationOnConvertation.setText(", ".join(file.columns))
             self.labelInformationOnConvertation.setVisible(True)
             self.lineEditInformationOnConvertation.setVisible(True)
 
     def convert_file(self):
         self.lineEdit.setText("Конвертация")
-        read_file = pd.read_csv(self.filename)
+
+        columnsFromLine = self.lineEditInformationOnConvertation.text().strip()
+        columnsFromLinelList = list(filter(None, columnsFromLine.split(', ')))
+
+        for element in columnsFromLinelList:
+            if not element in self.csv_columns:
+                self.lineEdit.setText('Нет такого ключа: ' + element)
+                return
+
+        read_file = pd.read_csv(self.filename, usecols=columnsFromLinelList)
 
         extension = os.path.splitext(self.filename)
         self.new_filename = extension[0] + '_' + str(datetime.now().strftime('%d%m%Y%H%M%S')) + '.xlsx'
