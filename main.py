@@ -1,6 +1,7 @@
 import os
 import sys
 
+import now as now
 import pandas as pd
 from PyQt6 import QtWidgets
 
@@ -37,16 +38,27 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         file = QtWidgets.QFileDialog.getOpenFileName(self, "Выберите файл")
 
         if file[0]:
+            extension = os.path.splitext(file[0])
+            if extension[1] != '.csv':
+                self.lineEdit.setText('Неверный тип файла')
+                return
+
             self.filename = file[0]
             self.lineEdit.setText(file[0])
+            self.OpenButton.setVisible(False)
 
     def convert_file(self):
-        self.lineEdit.setText("Алесики")
+        self.lineEdit.setText("Конвертация")
         read_file = pd.read_csv(self.filename)
+
+        # extension = os.path.splitext(self.filename)
+        # extension[0] = extension[0]+ now.strftime("%d-%m-%Y %H:%M")
+        # extension[1] = self.filename.replace('.csv', '.xlsx')
+
         self.new_filename = self.filename.replace('.csv', '.xlsx')
         read_file.to_excel(self.new_filename, index=None, header=True)
         self.OpenButton.setVisible(True)
-        self.lineEdit.setText("Конвертированние успешно")
+        self.lineEdit.setText("Конвертирование успешно")
         return
 
     def open_file(self):
